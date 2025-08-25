@@ -1,0 +1,5 @@
+{
+  "name": "My Simple Family Tree",
+  "description": "Visually build your family tree, generate biographies for your ancestors, and research historical records. Simple, free, and supports GEDCOM import/export for compatibility with other genealogy software.",
+  "requestFramePermissions": []
+}
