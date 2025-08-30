@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AnimatedTree from './AnimatedTree';
 
 // --- SVG Icon Components ---
@@ -70,6 +70,33 @@ const ArrowIcon: React.FC<{ direction: 'right' | 'down'}> = ({ direction }) => (
     </svg>
 );
 
+const ChevronDownIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" /></svg>;
+
+const FAQItem: React.FC<{ question: string; children: React.ReactNode }> = ({ question, children }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <div className="border-b border-gray-200 py-4">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex justify-between items-center text-left focus:outline-none"
+                aria-expanded={isOpen}
+            >
+                <h4 className="text-lg font-semibold text-gray-800">{question}</h4>
+                <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                    <ChevronDownIcon />
+                </span>
+            </button>
+            <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 mt-4' : 'max-h-0'}`}
+            >
+                <div className="text-gray-600 leading-relaxed">
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // --- Landing Page Component ---
 
@@ -108,7 +135,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                 <span className="text-amber-600">Tell Their Stories.</span>
                             </h1>
                             <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-                                Visually construct your family tree with our intuitive, easy-to-use builder. It's completely free to use—no sign-up required, no hidden costs.
+                                Visually construct your family tree with our intuitive, easy-to-use genealogy builder. It's completely free—no sign-up required, no hidden costs. Start charting your ancestry today.
                             </p>
                             <button 
                                 onClick={onStart} 
@@ -126,26 +153,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     <div className="container mx-auto px-6">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Everything You Need to Chart Your Lineage</h2>
-                            <p className="text-gray-600 mt-3 text-lg">Powerful, yet simple to use.</p>
+                            <p className="text-gray-600 mt-3 text-lg">A powerful and simple genealogy tool, right in your browser.</p>
                         </div>
                         <div className="grid md:grid-cols-3 gap-12 text-center">
                             {/* Feature 1 */}
                             <div className="flex flex-col items-center">
                                 <BuildTreeIcon />
                                 <h3 className="text-xl font-semibold mt-6 mb-2">Intuitive Tree Builder</h3>
-                                <p className="text-gray-600 leading-relaxed">Easily add parents, children, spouses, and siblings. Watch your interactive family tree grow with each addition.</p>
+                                <p className="text-gray-600 leading-relaxed">Easily add parents, children, spouses, and siblings with our simple visual editor. Watch your interactive family chart grow, making complex family histories easy to understand.</p>
                             </div>
                              {/* Feature 2 */}
                              <div className="flex flex-col items-center">
                                 <ImportExportIcon />
-                                <h3 className="text-xl font-semibold mt-6 mb-2">Import & Export</h3>
-                                <p className="text-gray-600 leading-relaxed">Seamlessly import existing family trees with standard GEDCOM files, or export your work for use in other software.</p>
+                                <h3 className="text-xl font-semibold mt-6 mb-2">Import & Export GEDCOM</h3>
+                                <p className="text-gray-600 leading-relaxed">Seamlessly import existing family trees with standard GEDCOM files. Export your work to share, print, or use in other genealogy software. Your data is always portable.</p>
                             </div>
                             {/* Feature 3 */}
                              <div className="flex flex-col items-center">
                                 <AiBioIcon />
-                                <h3 className="text-xl font-semibold mt-6 mb-2">Narrative Biographies</h3>
-                                <p className="text-gray-600 leading-relaxed">Go beyond dates and names. Generate concise, narrative-style summaries of a person's life based on the known facts in your tree.</p>
+                                <h3 className="text-xl font-semibold mt-6 mb-2">AI-Powered Biographies</h3>
+                                <p className="text-gray-600 leading-relaxed">Go beyond dates and names. With one click, generate concise, narrative-style summaries of a person's life based on the known facts in your family tree, perfect for sharing.</p>
                             </div>
                         </div>
                     </div>
@@ -162,7 +189,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                                 <span className="text-amber-600 font-semibold">INTUITIVE BUILDER</span>
                                 <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mt-2">Visually Map Your History</h2>
                                 <p className="text-lg text-gray-600 mt-4">
-                                    Easily add parents, children, spouses, and siblings with a few clicks. The interactive tree automatically adjusts and arranges itself, providing a clear and beautiful view of your family's structure as it grows.
+                                    Our simple family tree maker allows you to add parents, children, spouses, and siblings with a few clicks. The interactive tree automatically adjusts, providing a clear and beautiful view of your family's structure as it grows.
                                 </p>
                             </div>
                         </div>
@@ -231,8 +258,35 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                     </div>
                 </section>
 
+                {/* FAQ Section */}
+                <section id="faq" className="py-20 bg-gray-50">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                            <p className="text-gray-600 mt-3 text-lg">Answers to common questions about our free family tree maker.</p>
+                        </div>
+                        <div className="max-w-3xl mx-auto">
+                            <FAQItem question="Is this family tree builder really free?">
+                                <p>Yes, absolutely. My Simple Family Tree is 100% free to use with all features enabled. There are no subscriptions, hidden costs, or premium versions. We believe everyone should have access to their family history.</p>
+                            </FAQItem>
+                             <FAQItem question="Do I need to create an account or sign up?">
+                                <p>No sign-up is required. The application runs entirely in your web browser. Your family tree data is processed on your device, ensuring your privacy.</p>
+                            </FAQItem>
+                            <FAQItem question="Is my family data private and secure?">
+                                <p>Yes. Your privacy is our top priority. All data you enter is stored and processed locally within your browser. It is never sent to our servers or any third party, giving you complete control over your information.</p>
+                            </FAQItem>
+                            <FAQItem question="Can I save my work and continue later?">
+                                <p>Yes. You can save your entire tree as a project file (.json) to your computer. You can then open this file later in our application to continue exactly where you left off.</p>
+                            </FAQItem>
+                            <FAQItem question="What is a GEDCOM file and do you support it?">
+                                <p>GEDCOM (.ged) is the universal file format for sharing genealogical data between different software programs. We fully support both importing GEDCOM files to start your tree and exporting your completed tree to a GEDCOM file for use elsewhere.</p>
+                            </FAQItem>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Final CTA */}
-                <section className="bg-gray-50 py-20 text-center">
+                <section className="bg-white py-20 text-center">
                     <div className="container mx-auto px-6">
                          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900">Ready to Uncover Your Family's Past?</h2>
                         <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto">
